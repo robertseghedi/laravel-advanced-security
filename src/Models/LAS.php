@@ -2,9 +2,10 @@
 
 namespace RobertSeghedi\LAS\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Factories\HasFactory, Cache;
 use Illuminate\Database\Eloquent\Model, Request;
 use Illuminate\Support\Facades\Crypt, Illuminate\Contracts\Encryption\DecryptException;
+use RobertSeghedi\LAS\Models\SecureLog;
 
 class LAS extends Model
 {
@@ -122,7 +123,7 @@ class LAS extends Model
             }
             return $randomString;
         }
-        public static function ssl()
+        public static function isSSL()
         {
             if(!empty($_SERVER['https']))
             {
@@ -136,5 +137,56 @@ class LAS extends Model
             {
                 return 'not secure';
             }
-    }
+        }
+        public static function log($user, $text)
+        {
+            $securelog = new SecureLog();
+            $securelog->user = $user;
+            $securelog->string = Crypt::encrypt($text);
+            $securelog->ip = Crypt::encrypt(LAS::ip());
+            $securelog->os = Crypt::encrypt(LAS::os());
+            $securelog->browser = Crypt::encrypt(LAS::browser());
+            $saved_secure_log = $securelog->save();
+        }
+        public static function logs($user, $results = 'none', $time = 1800)
+        {
+            if($results == 'none')
+            {
+                Cache::forget("userlogs_$user");
+                $ao = Cache::remember("userlogs_$user", $time, function () use ($user) {
+                    $ao = SecureLog::where('user', $user)->get()->lazy()->each(function($a){
+                        $a->text = Crypt::decrypt($a->string);
+                    });
+                    return (object) $ao;
+                });
+                return json_encode($ao);
+            }
+            elseif($results != 'none')
+            {
+                Cache::forget("userlogs_$user");
+                $ao = Cache::remember("userlogs_$user", $time, function () use ($user, $results) {
+                    $ao = SecureLog::where('user', $user)->take($results)->get();
+                    foreach($ao as $a)
+                    {
+                        $a->text = Crypt::decrypt($a->string);
+                    }
+                    return (object) $ao;
+                });
+                return json_encode($ao);
+            }
+        }
+        public static function all_logs($results = 'none', $time = 1800)
+        {
+            if($results == 'none')
+            {
+                Cache::forget("user_alllogs");
+                $ao = Cache::remember("user_alllogs", $time, function () {
+                    $ao = SecureLog::all()->lazy()->each(function($a){
+                        $a->text = Crypt::decrypt($a->string);
+                    });
+                    return (object) $ao;
+                });
+                return json_encode($ao);
+            }
+        }
 }
