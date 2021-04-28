@@ -22,7 +22,10 @@
 
 RobertSeghedi\LAS\LASProvider::class,
  ```
- 
+ Run the migrate command in order to add the secure-logs table
+  ```
+  php artisan migrate
+   ```
 ## Information
  
 | Command name | What it does |
