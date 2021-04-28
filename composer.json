@@ -1,5 +1,6 @@
 {
     "name": "robertseghedi/laravel-advanced-security",
+    "description": " This is a fresh Laravel plugin which gets security data from your users and gives you the chance to store it crypted or decrypted, with no stress. Educational purposes only / other purposes but on your own liability.",
     "license": "MIT",
     "authors": [
         {

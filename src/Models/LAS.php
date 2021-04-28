@@ -122,7 +122,7 @@ class LAS extends Model
             }
             return $randomString;
         }
-        public static function isSSL()
+        public static function ssl()
         {
             if(!empty($_SERVER['https']))
             {
