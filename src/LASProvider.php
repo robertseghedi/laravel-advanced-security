@@ -23,6 +23,14 @@ class LASProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->loadMigrationsFrom(__DIR__.'/database/migrations');
+        if ($this->app->runningInConsole()) {
+        // Export the migration
+        if (! class_exists('CreateSecureLogsTable')) {
+            $this->publishes([
+            __DIR__ . '/database/migrations/create_secure_logs.php.stub' => database_path('migrations/' . date('Y_m_d_His', time()) . '_create_secure_logs.php'),
+            // you can add any number of migrations here
+            ], 'migrations');
+        }
+        }
     }
 }
