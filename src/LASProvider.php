@@ -27,7 +27,7 @@ class LASProvider extends ServiceProvider
         // Export the migration
             if(! class_exists('create_robertseghedi_secure_logs')) {
                 $this->publishes([
-                __DIR__ . '/../database/migrations/create_robertseghedi_secure_logs.php.stub' => database_path('migrations/' . date('Y_m_d_His', time()) . '_create_robertseghedi_secure_logs.php'),
+                __DIR__ . '/database/migrations/create_robertseghedi_secure_logs.php.stub' => database_path('migrations/' . date('Y_m_d_His', time()) . '_create_robertseghedi_secure_logs.php'),
                 // you can add any number of migrations here
                 ], 'migrations');
             }
