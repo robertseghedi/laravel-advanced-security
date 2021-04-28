@@ -35,6 +35,9 @@ RobertSeghedi\LAS\LASProvider::class,
 | LAS::password($length) | Generates random numbered-lettered password in the mentioned length - default is 10 |
 | LAS::pin($length) | Generates a custom PIN in the mentioned length - default is 4|
 | LAS::ssl() | Returns if the actual site is secured or not (SSL)|
+| LAS::log($user, $text) | Inserts an encrypted log with text to a user|
+| LAS::logs($user, $results, $time) | Efficiently fetches & caches user logs based on the mentioned criteria|
+| LAS::all_logs($results, $time) | Efficiently fetches & caches all the secure logs|
    
 ## Usage
 
@@ -60,6 +63,15 @@ public function add_post(Request $req)
     $post->os = LAS::os(); // grabs the user OS
     $saved_post = $post->save();
     if($saved_post) return redirect()->back()->with('success', 'Article posted.');
+}
+```
+
+```php
+public function insert_log($user_id = null)
+{
+    $user = User::find($user_id);
+    $log = LAS::log($user_id, "$user->name joined the chat.");
+    if($log) return redirect()->back();
 }
 ```
 ### 3. Do whatever you want with the data
