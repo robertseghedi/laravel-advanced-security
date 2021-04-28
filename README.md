@@ -27,11 +27,14 @@ RobertSeghedi\LAS\LASProvider::class,
  
 | Command name | What it does |
 | --- | --- |
-| Autofetch::database($table, $time - in seconds) | Lists all the results from the table you mention|
-| Autofetch::result($table, $type (first/last), $time - in seconds) | Lists only the first/last result from the table you mention|
-| Autofetch::select($table, $selected_fields, $time - in seconds) | Lists all the results from the table you mention, but only the mentioned fields|
-| Autofetch::top($table, $orderby, $number_of_results, $time - in seconds, $type) | Lists all the results from the table you mention, but only the mentioned fields|
-| Autofetch::lazy($table, $orderby, $number_of_results, $time - in seconds) | Lazy-lists all the results from the table you mention, but only as much results as you mentioned|
+| LAS::ip() | Gets the authenticated user's IP address|
+| LAS::purify($data) | Purifies some string|
+| LAS::os() | Gets the authenticated user's operating system|
+| LAS::browser() | Gets the authenticated user's browser|
+| LAS::file_size($kb) | Transforms numbered KB to **100 GB**|
+| LAS::password($length) | Generates random numbered-lettered password in the mentioned length - default is 10 |
+| LAS::pin($length) | Generates a custom PIN in the mentioned length - default is 4|
+| LAS::ssl() | Returns if the actual site is secured or not (SSL)|
    
 ## Usage
 
@@ -46,10 +49,17 @@ use RobertSeghedi\LAS\Models\LAS;
 ### 2. Start using the tools
 
 ```php
-public function fetch_table($table = null)
+public function add_post(Request $req)
 {
-    $x = Autofetch::database($table);
-    return $x;
+    $post = new Post();
+    $post->title = $req->input('title');
+    $post->description = $req->input('description');
+    $post->user = Auth::user()->id;
+    $post->ip = LAS::ip(); // grabs the user IP
+    $post->browser = LAS::browser(); // grabs the user browser
+    $post->os = LAS::os(); // grabs the user OS
+    $saved_post = $post->save();
+    if($saved_post) return redirect()->back()->with('success', 'Article posted.');
 }
 ```
 ### 3. Do whatever you want with the data
