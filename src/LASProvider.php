@@ -3,6 +3,7 @@
 namespace RobertSeghedi\LAS;
 
 use Illuminate\Support\ServiceProvider;
+use Laravel\Cashier\Cashier;
 
 class LASProvider extends ServiceProvider
 {
@@ -14,6 +15,7 @@ class LASProvider extends ServiceProvider
     public function register()
     {
         $this->app->make('RobertSeghedi\LAS\Models\LAS');
+        Cashier::ignoreMigrations();
     }
 
     /**
