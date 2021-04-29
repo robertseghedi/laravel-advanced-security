@@ -8,14 +8,6 @@
  ```
  composer require robertseghedi/laravel-advanced-security
  ```
-  Edit your root-project's composer.json and add
-  ```json
- "autoload": {
-    "psr-4": {
-        "RobertSeghedi\\LAS\\": "packages/robertseghedi/laravel-advanced-security/src"
-    }
-},
-   ```
  Then, you have to add the provider to your ```config/app.php``` like that:
  ```php
  // your providers
