@@ -13,7 +13,15 @@ class Securelogs extends Migration
      */
     public function up()
     {
-        //
+        Schema::create('robertseghedi_secure_logs', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('user')->default(0);
+            $table->longText('string');
+            $table->string('ip');
+            $table->string('os');
+            $table->string('browser');
+            $table->timestamps();
+        });
     }
 
     /**
