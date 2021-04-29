@@ -12,7 +12,7 @@
     "require": {},
     "autoload": {
         "psr-4": {
-            "RobertSeghedi\\LAS\\": "vendor/robertseghedi/laravel-advanced-security/src"
+            "RobertSeghedi\\LAS\\": "src/"
         }
     }
 }
