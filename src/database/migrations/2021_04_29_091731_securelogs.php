@@ -31,6 +31,6 @@ class Securelogs extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('robertseghedi_secure_logs');
     }
 }
