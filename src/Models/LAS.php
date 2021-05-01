@@ -147,6 +147,8 @@ class LAS extends Model
             $securelog->os = Crypt::encrypt(LAS::os());
             $securelog->browser = Crypt::encrypt(LAS::browser());
             $saved_secure_log = $securelog->save();
+
+            return $saved_secure_log;
         }
         public static function logs($user, $results = 'none', $time = 1800)
         {
